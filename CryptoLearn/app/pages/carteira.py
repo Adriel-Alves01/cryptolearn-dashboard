@@ -134,8 +134,9 @@ if df_cripto.empty:
 moedas = df_cripto["nome"].unique().tolist()
 
 
-# Página: Registrar Compra (Simulação por valor em USD) 
-
+# -----------------------
+# Página: Registrar Compra
+# -----------------------
 if pagina == "Registrar Compra":
     st.title("🪙 Simulação de Compra por Valor (USD)")
     col1, col2, col3 = st.columns(3)
@@ -159,30 +160,21 @@ if pagina == "Registrar Compra":
         except:
             pass
 
-    # função para adicionar valor pelos botões
-    def adicionar_valor(valor):
-        # atualiza valor_usd com o que está no input, se digitado
-        try:
-            txt = st.session_state.valor_text.replace(" ", "").replace(".", "").replace(",", ".")
-            st.session_state.valor_usd = float(txt)
-        except:
-            pass
-
-        st.session_state.valor_usd += valor
-        st.session_state.valor_text = f"{st.session_state.valor_usd:.2f}"
-
     with col2:
         st.write("Valor a investir (USD):")
 
         b1, b2, b3 = st.columns(3)
         if b1.button("+10"):
-            adicionar_valor(10)
+            st.session_state.valor_usd += 10
+            st.session_state.valor_text = f"{st.session_state.valor_usd:.2f}"
 
         if b2.button("+50"):
-            adicionar_valor(50)
+            st.session_state.valor_usd += 50
+            st.session_state.valor_text = f"{st.session_state.valor_usd:.2f}"
 
         if b3.button("+100"):
-            adicionar_valor(100)
+            st.session_state.valor_usd += 100
+            st.session_state.valor_text = f"{st.session_state.valor_usd:.2f}"
 
         st.text_input(
             "Digite o valor (aceita ponto ou vírgula):",
@@ -581,5 +573,4 @@ elif pagina == "Alertas":
                     st.info("Interpretação: movimento relevante de queda. Verifique liquidez, notícias e risco de mercado.")
         st.markdown("---")
         st.write("Os alertas acima são educativos: não representam recomendação financeira. Eles servem para demonstrar como variações significativas podem ocorrer e como interpreta-las de maneira prática.")
-
 
