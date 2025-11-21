@@ -89,8 +89,13 @@ def coletar_historico():
     salvar_no_banco(registros)
     print("✅ Histórico dos últimos 12 meses salvo com sucesso!")
 
-
+def atualizar_tudo():
+    coletar_historico()      # últimos 365 dias
+    coletar_dados_atuais()   # dados atuais
+    
 # PROGRAMA PRINCIPAL 
 if __name__ == "__main__":
     coletar_historico()     # Executa uma vez 
     coletar_dados_atuais()  # Coleta dados atuais uma vez
+
+
