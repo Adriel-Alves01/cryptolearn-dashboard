@@ -134,76 +134,7 @@ if df_cripto.empty:
 moedas = df_cripto["nome"].unique().tolist()
 
 
-# Página: Registrar Compra (Simulação por valor em USD) 
-
-if pagina == "Registrar Compra":
-    st.title("🪙 Simulação de Compra por Valor (USD)")
-    col1, col2, col3 = st.columns(3)
-
-    # moeda
-    with col1:
-        moeda = st.selectbox("Moeda", moedas)
-
-    # inicializa estado
-    if "valor_usd" not in st.session_state:
-        st.session_state.valor_usd = 0.0
-
-    if "valor_text" not in st.session_state:
-        st.session_state.valor_text = "0"
-
-    # callback do input
-    def _on_change_text():
-        txt = st.session_state.valor_text.replace(" ", "").replace(".", "").replace(",", ".")
-        try:
-            st.session_state.valor_usd = float(txt)
-        except:
-            pass
-
-    with col2:
-        st.write("Valor a investir (USD):")
-
-        b1, b2, b3 = st.columns(3)
-        if b1.button("+10"):
-            st.session_state.valor_usd += 10
-            st.session_state.valor_text = f"{st.session_state.valor_usd:.2f}"
-
-        if b2.button("+50"):
-            st.session_state.valor_usd += 50
-            st.session_state.valor_text = f"{st.session_state.valor_usd:.2f}"
-
-        if b3.button("+100"):
-            st.session_state.valor_usd += 100
-            st.session_state.valor_text = f"{st.session_state.valor_usd:.2f}"
-
-        st.text_input(
-            "Digite o valor (aceita ponto ou vírgula):",
-            key="valor_text",
-            on_change=_on_change_text
-        )
-
-        st.info(f"Valor selecionado: ${st.session_state.valor_usd:,.2f}")
-
-    with col3:
-        data_compra = st.date_input("Data da compra", value=date.today())
-
-    preco_no_dia = preco_por_data(df_cripto, moeda, data_compra)
-    quantidade = (st.session_state.valor_usd / preco_no_dia) if preco_no_dia else 0
-    st.success(f"Você está comprando aproximadamente {quantidade:.8f} {moeda}")
-
-    if st.button("Registrar compra", key="registrar_compra"):
-        if preco_no_dia is None:
-            st.error("Não há preço disponível nessa data.")
-        elif st.session_state.valor_usd <= 0:
-            st.error("Digite um valor maior que 0.")
-        else:
-            salvar_transacao(moeda, quantidade, data_compra.isoformat(), preco_no_dia)
-            st.success("Compra registrada com sucesso!")
-
-            # marca para reset da próxima execução
-            st.session_state.valor_usd = 0.0
-            st.session_state.resetar_valor = True
-
-            st.rerun()
+streamlit run App/dashboard.py
 # -----------------------
 # Página: Transações
 
@@ -572,3 +503,4 @@ elif pagina == "Alertas":
                     st.info("Interpretação: movimento relevante de queda. Verifique liquidez, notícias e risco de mercado.")
         st.markdown("---")
         st.write("Os alertas acima são educativos: não representam recomendação financeira. Eles servem para demonstrar como variações significativas podem ocorrer e como interpreta-las de maneira prática.")
+
