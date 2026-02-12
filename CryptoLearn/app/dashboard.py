@@ -28,7 +28,7 @@ if st.sidebar.button(" Atualizar "):
         st.error(f"❌ Erro ao atualizar dados: {e}")
 
 
-# CARREGAR O BANCO APÓS A ATUALIZAÇÃO
+# Carregar o banco
 
 if not os.path.exists(DB_PATH):
     st.error("❌ Banco de dados não encontrado. Execute o coleta.py uma vez localmente.")
@@ -38,7 +38,7 @@ conn = sqlite3.connect(DB_PATH)
 df = pd.read_sql_query("SELECT * FROM cripto_dados ORDER BY timestamp ASC", conn)
 conn.close()
 
-# INTERFACE PRINCIPAL DO DASHBOARD
+# Tela principal
 st.title("📊 Dashboard de Criptomoedas - CryptoLearn")
 
 if df.empty:
@@ -59,7 +59,7 @@ hoje = df_filtrado["timestamp"].max()
 data_limite = hoje - pd.Timedelta(days=dias)
 df_filtrado = df_filtrado[df_filtrado["timestamp"] >= data_limite]
 
-# GRÁFICO PRINCIPAL
+# Gráfico
 min_price = df_filtrado["preco"].min()
 max_price = df_filtrado["preco"].max()
 df_filtrado["media_movel"] = df_filtrado["preco"].rolling(window=7).mean()
@@ -121,7 +121,7 @@ col2.metric("📉 Preço no Início do Período", f"${preco_antigo:,.2f}" if pre
 col3.metric("📈 Variação (%)", f"{variacao:.2f}%" if variacao else "N/A")
 
 
-# GRÁFICOS ADICIONAIS
+# Gráfico adicional
 
 st.subheader("📊 Outros Indicadores")
 col_a, col_b = st.columns(2)
@@ -137,3 +137,4 @@ st.subheader("📄 Dados recentes")
 st.dataframe(df_filtrado)
 
 st.caption("Desenvolvido para o TCC - Plataforma educativa de análise de criptomoedas.")
+
