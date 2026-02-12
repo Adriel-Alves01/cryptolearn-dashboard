@@ -60,7 +60,8 @@ def coletar_dados_atuais():
         print(f"❌ Erro ao acessar API (atuais): {response.status_code}")
 
 
-# coletar histórico (últimos 12 meses) 
+# coletar histórico dos ultimos 12 meses
+
 def coletar_historico():
     """Coleta dados diários dos últimos 12 meses (365 dias) para cada moeda."""
     registros = []
@@ -97,5 +98,6 @@ def atualizar_tudo():
 if __name__ == "__main__":
     coletar_historico()     # Executa uma vez 
     coletar_dados_atuais()  # Coleta dados atuais uma vez
+
 
 
