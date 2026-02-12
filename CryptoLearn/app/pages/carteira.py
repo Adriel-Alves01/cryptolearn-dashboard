@@ -15,7 +15,7 @@ ROOT_DIR = os.path.dirname(os.path.dirname(__file__))  # volta para /app
 DB_PATH = os.path.join(ROOT_DIR, "db", "cripto.db")
 
 
-# Helpers de BD
+# Banco de dados
 
 def conectar():
     return sqlite3.connect(DB_PATH, check_same_thread=False)
@@ -134,9 +134,9 @@ if df_cripto.empty:
 moedas = df_cripto["nome"].unique().tolist()
 
 
-# -----------------------
-# Página: Registrar Compra
-# -----------------------
+
+# Página de Registrar Compra
+
 if pagina == "Registrar Compra":
     st.title("🪙 Simulação de Compra por Valor (USD)")
     col1, col2, col3 = st.columns(3)
@@ -205,7 +205,7 @@ if pagina == "Registrar Compra":
             st.session_state.resetar_valor = True
 
             st.rerun()
-# -----------------------
+
 # Página: Transações
 
 elif pagina == "Transações":
@@ -281,7 +281,7 @@ elif pagina == "Evolução da Carteira":
     colC.metric("📊 Retorno (%)", f"{retorno_pct:.2f}%")
 
     
-    # TABELA DE TRANSACÕES
+    # Tabela de transações
     
     st.subheader("🧾 Histórico de Transações")
     st.dataframe(
@@ -290,7 +290,7 @@ elif pagina == "Evolução da Carteira":
     )
 
    
-    # EVOLUÇÃO INDIVIDUAL DE CADA COMPRA
+    # evolução individual das moedas
    
     st.markdown("---")
     st.subheader("📈 Evolução Individual das Compras")
@@ -354,7 +354,7 @@ elif pagina == "Evolução da Carteira":
         col2.metric("Valor Atual", f"${valor_atual:,.2f}")
         col3.metric("Retorno (%)", f"{retorno_pct:.2f}%")
 
-# Página: Relatórios (Resumo da Carteira)
+#  Relatórios (Resumo da Carteira)
 
 elif pagina == "Relatórios":
     st.title(" Relatórios da Carteira")
@@ -366,7 +366,7 @@ elif pagina == "Relatórios":
         st.stop()
 
     
-    # 1) Cálculo dos dados
+    # Cálculo dos dados
     
     resultados = []
     for _, row in df_carteira.iterrows():
@@ -397,7 +397,7 @@ elif pagina == "Relatórios":
     df_result = pd.DataFrame(resultados)
 
   
-    # 2) Resumo geral
+    # Resumo geral
    
     st.markdown("## Resumo Geral da Carteira:")
 
@@ -415,7 +415,7 @@ elif pagina == "Relatórios":
     st.markdown("---")
 
     
-    # 3) Gráfico de Pizza: Distribuição da carteira
+    #  Gráfico de Pizza: Distribuição da carteira
     
     st.markdown(" ## Distribuição da Carteira por Moeda:")
     df_pizza = df_result.groupby("moeda")["atual"].sum().reset_index()
@@ -427,7 +427,7 @@ elif pagina == "Relatórios":
     st.markdown("---")
 
   
-    # 4) Tabela por moeda (detalhada)
+    # Tabela por moeda (detalhada)
 
     st.markdown("## 📄 Desempenho por Moeda")
     df_exibir = df_result.copy()
@@ -449,7 +449,7 @@ elif pagina == "Relatórios":
     st.markdown("---")
 
     
-    # 5) Lista de transações
+    #  Lista de transações
    
     st.markdown("## 🧾 Histórico Completo de Transações")
 
@@ -467,7 +467,7 @@ elif pagina == "Relatórios":
     st.markdown("---")
 
    
-    # 6) Download CSV
+    #  Download CSV
   
     st.subheader("📥 Exportar CSV")
     csv_bytes = df_result.to_csv(index=False).encode("utf-8")
@@ -480,7 +480,7 @@ elif pagina == "Relatórios":
     )
 
    
-    # 7) Exportação em PDF
+    # Exportação em PDF
    
     st.subheader("📄 Gerar PDF resumo")
 
@@ -573,4 +573,5 @@ elif pagina == "Alertas":
                     st.info("Interpretação: movimento relevante de queda. Verifique liquidez, notícias e risco de mercado.")
         st.markdown("---")
         st.write("Os alertas acima são educativos: não representam recomendação financeira. Eles servem para demonstrar como variações significativas podem ocorrer e como interpreta-las de maneira prática.")
+
 
